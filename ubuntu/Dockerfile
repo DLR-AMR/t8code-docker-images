@@ -35,6 +35,16 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libmpich-dev \
                        libz-dev \
                        libtool \
+# install opengl libs
+                       xorg-dev \
+                       libglu1-mesa-dev \
+                       freeglut3-dev \
+                       libglew1.5 \
+                       libglew1.5-dev \
+                       libglu1-mesa \
+                       libglu1-mesa-dev \
+                       libgl1-mesa-glx \
+                       libgl1-mesa-dev \
 # install OpenCASCADE
                        libocct-foundation-dev \
                        libocct-modeling-algorithms-dev\

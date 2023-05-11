@@ -85,7 +85,7 @@ cd ..; \
 mkdir t8code_build; \
 cd t8code_build; \
 ./../t8code/configure ${t8_configure_options}; \
-make -j28; \
+make -j28 V=0; \
 make install -j28; \
 fi
 

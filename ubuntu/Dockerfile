@@ -74,6 +74,7 @@ RUN git clone https://github.com/Kitware/VTK.git; \
     cd ../.. && rm -rf VTK
 
 RUN if [ "${t8code_version}" != "0" ]; then \
+cd ~; \
 git clone https://github.com/DLR-AMR/t8code.git; \
 cd t8code; \
 git checkout v${t8code_version}; \

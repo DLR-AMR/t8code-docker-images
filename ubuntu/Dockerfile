@@ -6,12 +6,6 @@ SHELL ["/bin/bash", "-c"]
 ARG t8code_version=1.0.0
 ARG vtk_version=9.2.6
 ARG vtk_library_version=9.2
-ARG t8_configure_options=CFLAGS="-O3" CXXFLAGS="-O3" \
-                        --enable-mpi CC=mpicc CXX=mpicxx \
-                        --with-occ --with-netcdf --enable-less-tests\
-                        --with-vtk --with-vtk_version_number=${vtk_library_version} \
-                        LDFLAGS="-L/usr/lib/" \
-                        CPPFLAGS="-I/usr/include/opencascade -I/usr/include/vtk-${vtk_library_version}"
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
@@ -84,7 +78,12 @@ git submodule update; \
 cd ..; \
 mkdir t8code_build; \
 cd t8code_build; \
-./../t8code/configure ${t8_configure_options}; \
+./../t8code/configure CFLAGS="-O3" CXXFLAGS="-O3" \
+                        --enable-mpi CC=mpicc CXX=mpicxx \
+                        --with-occ --with-netcdf --enable-less-tests\
+                        --with-vtk --with-vtk_version_number=${vtk_library_version} \
+                        LDFLAGS="-L/usr/lib/" \
+                        CPPFLAGS="-I/usr/include/opencascade -I/usr/local/include/vtk-${vtk_library_version}"; \
 make -j28 V=0; \
 make install -j28; \
 fi

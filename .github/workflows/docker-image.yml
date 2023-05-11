@@ -32,11 +32,12 @@ jobs:
     runs-on: ${{ matrix.os }} 
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
+    - name: Build the docker image
+      run: |
+        docker build --build-arg t8code_version=${{ matrix.t8code_version}} --tag dlramr/t8code-${{ matrix.target_os }}:${{ matrix.tag }} ${{ matrix.target_os }}
+    - name: Push the docker image
       env: # Set the secret as an input
         docker_token: ${{ secrets.DOCKER_TOKEN }}
       run: |
         docker login -u dlramr -p ${{ env.docker_token }}
-        docker build --build-arg t8code_version=${{ matrix.t8code_version}} --tag dlramr/t8code-${{ matrix.target_os }}:${{ matrix.tag }} ${{ matrix.target_os }}
         docker push dlramr/t8code-${{ matrix.target_os }}:${{ matrix.tag }}
-        

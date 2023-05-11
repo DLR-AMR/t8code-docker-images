@@ -8,7 +8,7 @@ ARG vtk_version=9.2.6
 ARG vtk_library_version=9.2
 ARG t8_configure_options=CFLAGS="-O3" CXXFLAGS="-O3" \
                         --enable-mpi CC=mpicc CXX=mpicxx \
-                        --with-occ --with-netcdf \
+                        --with-occ --with-netcdf --enable-less-tests\
                         --with-vtk --with-vtk_version_number=${vtk_library_version} \
                         LDFLAGS="-L/usr/lib/" \
                         CPPFLAGS="-I/usr/include/opencascade -I/usr/include/vtk-${vtk_library_version}"

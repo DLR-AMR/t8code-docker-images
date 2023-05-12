@@ -23,7 +23,6 @@ jobs:
           - os: ubuntu-latest
             target_os: ubuntu
             tag: t8-1.1.0
-            install_t8code: 1
             t8code_version: 1.1.0
           - os: ubuntu-latest
             target_os: ubuntu

@@ -4,8 +4,8 @@ LABEL Description="Ubuntu 20.04 with VTK, NetCDF and OpenCASCADE setup for use w
 SHELL ["/bin/bash", "-c"]
 
 ARG t8code_version=1.0.0
-ARG vtk_version=9.0.3
-ARG vtk_library_version=9.0
+ARG vtk_version=9.1.0
+ARG vtk_library_version=9.1
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH

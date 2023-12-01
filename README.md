@@ -1,2 +1,2 @@
-# t8code_dependencies_docker_image
-Docker image for t8code and its dependencies
+# t8code-docker-images
+Docker images for t8code and its dependencies

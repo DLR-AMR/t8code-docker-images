@@ -48,6 +48,10 @@ jobs:
             target_os: ubuntu
             tag: t8-1.6.1
             t8code_version: 1.6.1
+          - os: ubuntu-latest
+            target_os: ubuntu
+            tag: t8-0.0.0
+            t8code_version: 2.0.0
     runs-on: ${{ matrix.os }} 
     steps:
     - uses: actions/checkout@v2

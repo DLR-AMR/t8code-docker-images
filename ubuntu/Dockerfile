@@ -67,7 +67,7 @@ RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
     cmake .. \
     -DCMAKE_BUILD_TYPE=Release; \
 # build and install vtk
-    make install -j; \
+    make install -j4; \
 # cleanup
     cd ../.. && rm -rf OCCT
 
@@ -84,7 +84,7 @@ RUN git clone https://github.com/Kitware/VTK.git; \
     -DVTK_USE_MPI=ON \
     -DVTK_GROUP_ENABLE_MPI=YES; \
 # build and install vtk
-    make install -j; \
+    make install -j4; \
 # cleanup
     cd ../.. && rm -rf VTK
 
@@ -105,7 +105,7 @@ cd t8code_build; \
                         --with-vtk --with-vtk_version_number=${vtk_library_version} \
                         LDFLAGS="-L/usr/lib/" \
                         CPPFLAGS="-I/usr/include/opencascade -I/usr/local/include/vtk-${vtk_library_version}"; \
-make -j V=0; \
-make install -j; \
+make -j4 V=0; \
+make install -j4; \
 fi
 

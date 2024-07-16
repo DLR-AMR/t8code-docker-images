@@ -54,7 +54,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        tcl-dev \
                        tk-dev \
 # install NetCDF
-                       libnetcdf-dev
+                       libnetcdf-dev;
 
 #######################################
 # build vtk with VTK_WRAP_PYTHON=ON   #

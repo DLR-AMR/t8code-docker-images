@@ -44,10 +44,6 @@ jobs:
             t8code_version: 1.5.0
           - os: ubuntu-latest
             target_os: ubuntu
-            tag: t8-1.6.0
-            t8code_version: 1.6.0
-          - os: ubuntu-latest
-            target_os: ubuntu
             tag: t8-1.6.1
             t8code_version: 1.6.1
           - os: ubuntu-latest

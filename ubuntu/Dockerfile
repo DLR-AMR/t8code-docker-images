@@ -36,10 +36,21 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libglu1-mesa-dev \
                        freeglut3-dev \
                        libglew-dev \
-                       libglu1-mesa \
                        libglu1-mesa-dev \
-                       libgl1-mesa-glx \
                        libgl1-mesa-dev \
+# install dependencies of OpenCASCADE
+                       software-properties-common \
+                       autoconf \
+                       gdebi \
+                       libxi-dev \
+                       libxmu-dev \
+                       libxmu-headers \
+                       libx11-dev \
+                       mesa-common-dev \
+                       libfontconfig1-dev \
+                       libfreetype6-dev \
+                       tcl-dev \
+                       tk-dev \
 # install NetCDF
                        libnetcdf-dev
 

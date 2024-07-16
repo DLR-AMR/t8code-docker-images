@@ -29,6 +29,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libmpich-dev \
                        libz-dev \
                        libtool \
+                       doxygen-latex \
 # install opengl libs
                        xorg-dev \
                        libglu1-mesa-dev \

@@ -6,6 +6,7 @@ SHELL ["/bin/bash", "-c"]
 ARG t8code_version=1.0.0
 ARG vtk_version=9.1.0
 ARG vtk_library_version=9.1
+ARG occt_version=7_8_1
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
@@ -27,29 +28,51 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        curl \
                        git \
                        libmpich-dev \
-                       libz-dev \
+                       zlib1g-dev \
                        libtool \
                        doxygen-latex \
 # install opengl libs
                        xorg-dev \
                        libglu1-mesa-dev \
                        freeglut3-dev \
-                       libglew1.5 \
-                       libglew1.5-dev \
+                       libglew-dev \
                        libglu1-mesa \
                        libglu1-mesa-dev \
                        libgl1-mesa-glx \
                        libgl1-mesa-dev \
-# install OpenCASCADE
-                       libocct-foundation-dev \
-                       libocct-modeling-algorithms-dev\
-                       libocct-modeling-data-dev \
+# install dependencies of OpenCASCADE
+                       software-properties-common \
+                       autoconf \
+                       gdebi \
+                       libxi-dev \
+                       libxmu-dev \
+                       libxmu-headers \
+                       libx11-dev \
+                       mesa-common-dev \
+                       libfontconfig1-dev \
+                       libfreetype6-dev \
+                       tcl-dev \
+                       tk-dev \
 # install NetCDF
                        libnetcdf-dev
 
 #######################################
 # build vtk with VTK_WRAP_PYTHON=ON   #
 #######################################
+
+# clone occt
+RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
+    cd OCCT; \
+    git checkout V${occt_version}; \
+# configure build with cmake
+    mkdir -p build && cd build; \
+    cmake .. \
+    -DCMAKE_BUILD_TYPE=Release; \
+# build and install vtk
+    make install -j; \
+# cleanup
+    cd ../.. && rm -rf OCCT
+
 
 # clone vtk
 RUN git clone https://github.com/Kitware/VTK.git; \
@@ -61,10 +84,9 @@ RUN git clone https://github.com/Kitware/VTK.git; \
     -DBUILD_TESTING=OFF \
     -DCMAKE_BUILD_TYPE=Release \
     -DVTK_USE_MPI=ON \
-    -DVTK_MPI_NUMPROCS=28 \
     -DVTK_GROUP_ENABLE_MPI=YES; \
 # build and install vtk
-    make install -j28; \
+    make install -j; \
 # cleanup
     cd ../.. && rm -rf VTK
 
@@ -85,7 +107,7 @@ cd t8code_build; \
                         --with-vtk --with-vtk_version_number=${vtk_library_version} \
                         LDFLAGS="-L/usr/lib/" \
                         CPPFLAGS="-I/usr/include/opencascade -I/usr/local/include/vtk-${vtk_library_version}"; \
-make -j28 V=0; \
-make install -j28; \
+make -j V=0; \
+make install -j; \
 fi
 

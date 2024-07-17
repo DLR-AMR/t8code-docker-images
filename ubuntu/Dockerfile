@@ -1,6 +1,6 @@
-FROM ubuntu:24.04
+FROM ubuntu:20.04
 LABEL org.opencontainers.image.authors="Sandro Elsweijer <sandro.elsweijer@dlr.de>"
-LABEL Description="Ubuntu 24.04 with VTK, NetCDF and OpenCASCADE setup for use with t8code"
+LABEL Description="Ubuntu 20.04 with VTK, NetCDF and OpenCASCADE setup for use with t8code"
 SHELL ["/bin/bash", "-c"]
 
 ARG t8code_version=1.0.0
@@ -103,8 +103,8 @@ cd t8code_build; \
                         --enable-mpi CC=mpicc CXX=mpicxx \
                         --with-occ --with-netcdf --enable-less-tests\
                         --with-vtk --with-vtk_version_number=${vtk_library_version} \
-                        LDFLAGS="-L/usr/lib/" \
-                        CPPFLAGS="-I/usr/include/opencascade -I/usr/local/include/vtk-${vtk_library_version}"; \
+                        LDFLAGS="-L/usr/lib/ -L/usr/local/lib" \
+                        CPPFLAGS="-isystem/usr/local/include/opencascade -isystem/usr/local/include/vtk-${vtk_library_version}"; \
 make -j4 V=0; \
 make install -j4; \
 fi

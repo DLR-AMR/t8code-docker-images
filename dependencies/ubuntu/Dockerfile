@@ -3,7 +3,6 @@ LABEL org.opencontainers.image.authors="Sandro Elsweijer <sandro.elsweijer@dlr.d
 LABEL Description="Ubuntu 20.04 with VTK, NetCDF and OpenCASCADE setup for use with t8code"
 SHELL ["/bin/bash", "-c"]
 
-ARG t8code_version=1.0.0
 ARG vtk_version=9.1.0
 ARG vtk_library_version=9.1
 ARG occt_version=7_8_1
@@ -87,25 +86,3 @@ RUN git clone https://github.com/Kitware/VTK.git; \
     make install -j4; \
 # cleanup
     cd ../.. && rm -rf VTK
-
-RUN if [ "${t8code_version}" != "0" ]; then \
-cd ~; \
-git clone https://github.com/DLR-AMR/t8code.git; \
-cd t8code; \
-git checkout v${t8code_version}; \
-git submodule init; \
-git submodule update; \
-./bootstrap; \
-cd ..; \
-mkdir t8code_build; \
-cd t8code_build; \
-./../t8code/configure CFLAGS="-O3" CXXFLAGS="-O3" \
-                        --enable-mpi CC=mpicc CXX=mpicxx \
-                        --with-occ --with-netcdf --enable-less-tests\
-                        --with-vtk --with-vtk_version_number=${vtk_library_version} \
-                        LDFLAGS="-L/usr/lib/ -L/usr/local/lib" \
-                        CPPFLAGS="-isystem/usr/local/include/opencascade -isystem/usr/local/include/vtk-${vtk_library_version}"; \
-make -j4 V=0; \
-make install -j4; \
-fi
-

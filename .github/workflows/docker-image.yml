@@ -9,15 +9,31 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  t8_dependencies:
     strategy:
       fail-fast: false
       matrix:
         include: 
           - os: ubuntu-latest
             target_os: ubuntu
-            tag: t8-dependencies
-            t8code_version: 0
+    runs-on: ${{ matrix.os }} 
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the docker image
+      run: |
+        docker build --tag dlramr/t8code-${{ matrix.target_os }}:dependencies dependencies/${{ matrix.target_os }}
+    - name: Push the docker image
+      env: # Set the secret as an input
+        docker_token: ${{ secrets.DOCKER_TOKEN }}
+      run: |
+        docker login -u dlramr -p ${{ env.docker_token }}
+        docker push dlramr/t8code-${{ matrix.target_os }}:dependencies
+  with_t8code:
+    needs: t8_dependencies
+    strategy:
+      fail-fast: false
+      matrix:
+        include: 
           - os: ubuntu-latest
             target_os: ubuntu
             tag: t8-1.0.0
@@ -48,14 +64,14 @@ jobs:
             t8code_version: 1.6.1
           - os: ubuntu-latest
             target_os: ubuntu
-            tag: t8-0.0.0
+            tag: t8-2.0.0
             t8code_version: 2.0.0
     runs-on: ${{ matrix.os }} 
     steps:
     - uses: actions/checkout@v2
     - name: Build the docker image
       run: |
-        docker build --build-arg t8code_version=${{ matrix.t8code_version}} --tag dlramr/t8code-${{ matrix.target_os }}:${{ matrix.tag }} ${{ matrix.target_os }}
+        docker build --build-arg t8code_version=${{ matrix.t8code_version}} --tag dlramr/t8code-${{ matrix.target_os }}:${{ matrix.tag }} t8code/${{ matrix.target_os }}
     - name: Push the docker image
       env: # Set the secret as an input
         docker_token: ${{ secrets.DOCKER_TOKEN }}

@@ -31,6 +31,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        zlib1g-dev \
                        libtool \
                        doxygen-latex \
+                       libopenblas0-pthread \
 # install opengl libs
                        xorg-dev \
                        libglu1-mesa-dev \

@@ -21,7 +21,8 @@ RUN apt-get update -y && apt-get upgrade -y; \
     sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list; \
     apt-get update; \
 # install compiler cmake and other useful stuff
-    apt-get install -y build-essential \
+    apt-get install -y sudo \
+                       build-essential \
                        cmake \
                        wget \
                        curl \

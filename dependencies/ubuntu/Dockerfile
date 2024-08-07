@@ -5,7 +5,6 @@ SHELL ["/bin/bash", "-c"]
 
 ARG vtk_version=9.1.0
 ARG vtk_library_version=9.1
-ARG occt_version=7_8_1
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
@@ -39,41 +38,12 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libglew-dev \
                        libglu1-mesa-dev \
                        libgl1-mesa-dev \
-# install dependencies of OpenCASCADE
-                       software-properties-common \
-                       autoconf \
-                       gdebi \
-                       libxi-dev \
-                       libxmu-dev \
-                       libxmu-headers \
-                       libx11-dev \
-                       mesa-common-dev \
-                       libfontconfig1-dev \
-                       libfreetype6-dev \
-                       tcl-dev \
-                       tk-dev \
+# install OpenCASCADE
+                       libocct-foundation-dev \
+                       libocct-modeling-algorithms-dev\
+                       libocct-modeling-data-dev \
 # install NetCDF
                        libnetcdf-dev
-
-#######################################
-# build vtk with VTK_WRAP_PYTHON=ON   #
-#######################################
-
-# clone occt
-RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
-    cd OCCT; \
-    git checkout V${occt_version}; \
-# configure build with cmake
-    mkdir -p build && cd build; \
-    cmake .. \
-    -DCMAKE_BUILD_TYPE=Release \
-    -GNinja; \
-# build and install vtk
-    ninja -j4; \
-    ninja install -j4; \
-# cleanup
-    cd ../.. && rm -rf OCCT
-
 
 # clone vtk
 RUN git clone https://github.com/Kitware/VTK.git; \

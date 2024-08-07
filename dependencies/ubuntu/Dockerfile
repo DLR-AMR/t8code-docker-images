@@ -66,9 +66,11 @@ RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
 # configure build with cmake
     mkdir -p build && cd build; \
     cmake .. \
-    -DCMAKE_BUILD_TYPE=Release; \
+    -DCMAKE_BUILD_TYPE=Release \
+    -GNinja; \
 # build and install vtk
-    make install -j4; \
+    ninja -j4; \
+    ninja install -j4; \
 # cleanup
     cd ../.. && rm -rf OCCT
 
@@ -83,8 +85,10 @@ RUN git clone https://github.com/Kitware/VTK.git; \
     -DBUILD_TESTING=OFF \
     -DCMAKE_BUILD_TYPE=Release \
     -DVTK_USE_MPI=ON \
-    -DVTK_GROUP_ENABLE_MPI=YES; \
+    -DVTK_GROUP_ENABLE_MPI=YES \
+    -GNinja; \
 # build and install vtk
-    make install -j4; \
+    ninja -j4; \
+    ninja install -j4; \
 # cleanup
     cd ../.. && rm -rf VTK

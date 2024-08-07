@@ -21,12 +21,12 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the docker image
       run: |
-        docker build --tag dlramr/t8code-${{ matrix.target_os }}:dependencies dependencies/${{ matrix.target_os }}
+        docker build --tag dlramr/t8code-${{ matrix.target_os }}:t8-dependencies dependencies/${{ matrix.target_os }}
     - name: Push the docker image
       env: # Set the secret as an input
         docker_token: ${{ secrets.DOCKER_TOKEN }}
       run: |
-        docker login -u dlramr -p ${{ env.docker_token }}
+        echo ${{ env.docker_token }} | docker login --username dlramr --password-stdin
         docker push dlramr/t8code-${{ matrix.target_os }}:t8-dependencies
   with_t8code:
     needs: t8_dependencies
@@ -76,5 +76,5 @@ jobs:
       env: # Set the secret as an input
         docker_token: ${{ secrets.DOCKER_TOKEN }}
       run: |
-        docker login -u dlramr -p ${{ env.docker_token }}
+        echo ${{ env.docker_token }} | docker login --username dlramr --password-stdin
         docker push dlramr/t8code-${{ matrix.target_os }}:${{ matrix.tag }}

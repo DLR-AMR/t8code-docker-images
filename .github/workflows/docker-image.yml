@@ -27,7 +27,7 @@ jobs:
         docker_token: ${{ secrets.DOCKER_TOKEN }}
       run: |
         docker login -u dlramr -p ${{ env.docker_token }}
-        docker push dlramr/t8code-${{ matrix.target_os }}:dependencies
+        docker push dlramr/t8code-${{ matrix.target_os }}:t8-dependencies
   with_t8code:
     needs: t8_dependencies
     strategy:

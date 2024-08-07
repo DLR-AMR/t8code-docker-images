@@ -28,7 +28,7 @@ cd t8code_build; \
                         --with-occ --with-netcdf --enable-less-tests\
                         --with-vtk --with-vtk_version_number=${vtk_library_version} \
                         LDFLAGS="-L/usr/lib/ -L/usr/local/lib" \
-                        CPPFLAGS="-isystem/usr/local/include/opencascade -isystem/usr/local/include/vtk-${vtk_library_version}"; \
+                        CPPFLAGS="-isystem/usr/include/opencascade -isystem/usr/include/vtk-${vtk_library_version}"; \
 make -j4 V=0; \
 make install -j4; \
 fi

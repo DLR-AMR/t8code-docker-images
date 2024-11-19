@@ -10,8 +10,6 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
 ENV LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
-ARG COMPILER_VERSION=12
-
 #######################################################
 # Install software requirements and build tools       #
 #######################################################
@@ -47,8 +45,8 @@ RUN apt-get update -y && apt-get upgrade -y; \
 # install NetCDF
                        libnetcdf-dev \
 # install gcc-12 for C++20 support
-                       gcc-${COMPILER_VERSION} \
-                       g++-${COMPILER_VERSION}
+                       gcc-12 \
+                       g++-12
 
 # clone vtk
 RUN git clone https://github.com/Kitware/VTK.git; \

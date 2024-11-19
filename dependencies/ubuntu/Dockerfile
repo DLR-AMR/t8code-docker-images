@@ -14,6 +14,7 @@ ENV LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 # Install software requirements and build tools       #
 #######################################################
 
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test -y; 
 RUN apt-get update -y && apt-get upgrade -y; \
 # Prepare apt-get build-dep (https://askubuntu.com/questions/496549/error-you-must-put-some-source-uris-in-your-sources-list)
     cp /etc/apt/sources.list /etc/apt/sources.list~; \

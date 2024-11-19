@@ -30,6 +30,6 @@ cd t8code_build; \
                         LDFLAGS="-L/usr/lib/ -L/usr/local/lib" \
                         CPPFLAGS="-isystem/usr/include/opencascade -isystem/usr/include/vtk-${vtk_library_version}"; \
 make -j4 V=0; \
-make install -j4; \
-fi
+make install -j4;
+
 

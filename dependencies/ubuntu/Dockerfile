@@ -1,6 +1,6 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 LABEL org.opencontainers.image.authors="Sandro Elsweijer <sandro.elsweijer@dlr.de>"
-LABEL Description="Ubuntu 20.04 with VTK, NetCDF and OpenCASCADE setup for use with t8code"
+LABEL Description="Ubuntu 22.04 with VTK, NetCDF and OpenCASCADE setup for use with t8code"
 SHELL ["/bin/bash", "-c"]
 
 ARG vtk_version=9.1.0
@@ -14,7 +14,6 @@ ENV LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 # Install software requirements and build tools       #
 #######################################################
 
-RUN add-apt-repository ppa:ubuntu-toolchain-r/test -y; 
 RUN apt-get update -y && apt-get upgrade -y; \
 # Prepare apt-get build-dep (https://askubuntu.com/questions/496549/error-you-must-put-some-source-uris-in-your-sources-list)
     cp /etc/apt/sources.list /etc/apt/sources.list~; \
@@ -45,7 +44,6 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libocct-modeling-data-dev \
 # install NetCDF
                        libnetcdf-dev \
-# install gcc-12 for C++20 support
                        gcc-12 \
                        g++-12
 

@@ -43,7 +43,10 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libocct-modeling-algorithms-dev\
                        libocct-modeling-data-dev \
 # install NetCDF
-                       libnetcdf-dev
+                       libnetcdf-dev \
+# install gcc-12 for C++20 support
+                        gcc-12 \
+                        g++-12
 
 # clone vtk
 RUN git clone https://github.com/Kitware/VTK.git; \

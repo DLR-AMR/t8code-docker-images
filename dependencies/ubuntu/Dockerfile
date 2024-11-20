@@ -19,8 +19,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
 # Prepare apt-get build-dep (https://askubuntu.com/questions/496549/error-you-must-put-some-source-uris-in-your-sources-list)
     cp /etc/apt/sources.list /etc/apt/sources.list~; \
     sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list; \
-    apt-get update && apt install build-essential software-properties-common -y; \
-    add-apt-repository ppa:ubuntu-toolchain-r/test -y; \
+
     apt-get update -y; \
 # install compiler cmake and other useful stuff
     apt-get install -y sudo \
@@ -48,7 +47,10 @@ RUN apt-get update -y && apt-get upgrade -y; \
 # install NetCDF
                        libnetcdf-dev \
 # install libraries for gcc-12
-                       gcc-12 g++-12; \
+                       software-properties-common; \
+    add-apt-repository ppa:ubuntu-toolchain-r/test -y; \
+    apt-get update -y; \
+    apt-get install gcc-12 g++-12 -y; \
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12; \
     update-alternatives --config gcc;
 

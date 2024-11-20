@@ -44,22 +44,15 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libocct-modeling-data-dev \
 # install NetCDF
                        libnetcdf-dev \
-# install libraries for gcc-12
-                       libmpfrc++-dev \
-                       libmpc-dev \
-                       libgmp-dev \
-                       flex \
-                       gcc-multilib
 
 # install gcc-12
 RUN git clone https://gcc.gnu.org/git/gcc.git gcc-source ; \
     cd gcc-source ; \
     git branch -a ; \
     git checkout remotes/origin/releases/gcc-12 ; \
+    ./contrib/download_prerequisites ; \
     mkdir -p gcc-12-build && cd gcc-12-build ; \
-    unset LIBRARY_PATH; \
     ./../configure --enable-languages=c,c++ --prefix=$HOME/install/gcc-12 ; \
-    export LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH; \
     make -j4; \
     cd /gcc-source/gcc-12-build/ && make install; \
     cd ../.. && rm -rf gcc-source

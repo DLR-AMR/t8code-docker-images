@@ -20,7 +20,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
     cp /etc/apt/sources.list /etc/apt/sources.list~; \
     sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list; \
     apt-get update && apt install build-essential software-properties-common -y; \
-    add-apt-repository ppa:ubuntu-toolchain-r/test -y; \ &&
+    add-apt-repository ppa:ubuntu-toolchain-r/test -y; \
     apt-get update -y; \
 # install compiler cmake and other useful stuff
     apt-get install -y sudo \

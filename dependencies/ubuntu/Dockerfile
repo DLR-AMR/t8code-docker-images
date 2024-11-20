@@ -58,7 +58,7 @@ RUN git clone https://gcc.gnu.org/git/gcc.git gcc-source ; \
     git checkout remotes/origin/releases/gcc-12 ; \
     mkdir -p gcc-12-build && cd gcc-12-build ; \
     ./../configure --enable-languages=c,c++ ; \
-    ninja -j4; \
+    make -j4; \
     make install; \
     cd ../.. && rm -rf gcc-source
 

@@ -63,7 +63,9 @@ RUN git clone https://gcc.gnu.org/git/gcc.git gcc-source ; \
     ./../gcc-source/configure --enable-languages=c,c++ --prefix=$HOME/install/gcc-12 ; \
     make -j4; \
     cd ../gcc-12-build/ && make install; \
-    cd .. && rm -rf gcc-source
+    cd .. && rm -rf gcc-source ;\
+    gcc --version; \
+    g++ --version;
 
 # clone vtk
 RUN git clone https://github.com/Kitware/VTK.git; \

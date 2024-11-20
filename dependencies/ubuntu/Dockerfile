@@ -48,6 +48,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libmpfrc++-dev \
                        libmpc-dev \
                        libgmp-dev \
+                       flex \
                        gcc-multilib;
 
 # install gcc-12

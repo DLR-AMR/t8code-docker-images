@@ -10,6 +10,8 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
 ENV LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
+RUN echo $LIBRARY_PATH ;
+
 #######################################################
 # Install software requirements and build tools       #
 #######################################################

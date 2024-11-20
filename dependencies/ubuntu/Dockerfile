@@ -43,7 +43,12 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libocct-modeling-algorithms-dev\
                        libocct-modeling-data-dev \
 # install NetCDF
-                       libnetcdf-dev
+                       libnetcdf-dev \
+#install libs for gcc-12
+                       libmpfrc++-dev \
+                       libmpc-dev \
+                       libgmp-dev \
+                       gcc-multilib;
 
 # install gcc-12
 RUN git clone https://gcc.gnu.org/git/gcc.git gcc-source ; \

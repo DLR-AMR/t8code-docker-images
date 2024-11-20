@@ -44,9 +44,12 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libocct-modeling-data-dev \
 # install NetCDF
                        libnetcdf-dev \
-# install gcc-12 and g++-12
-                       gcc-12 \
-                       g++-12
+# install libraries for gcc-12
+                       libmpfrc++-dev \
+                       libmpc-dev \
+                       libgmp-dev \
+                       flex \
+                       gcc-multilib
 
 # clone vtk
 RUN git clone https://github.com/Kitware/VTK.git; \
@@ -65,3 +68,14 @@ RUN git clone https://github.com/Kitware/VTK.git; \
     ninja install -j4; \
 # cleanup
     cd ../.. && rm -rf VTK
+
+# install gcc-12
+RUN git clone https://gcc.gnu.org/git/gcc.git gcc-source; \
+    cd gcc-source; \
+    git branch -a; \
+    git checkout remotes/origin/releases/gcc-12; \
+    mkdir -p ../gcc-12-build && cd ../gcc-12-build ; \
+    ./../gcc-source/configure --enable-languages=c,c++ --prefix=&HOME/install/gcc-12; \
+    ninja -j4; \
+    make install; \
+    cd ../.. && rm -rf gcc-source

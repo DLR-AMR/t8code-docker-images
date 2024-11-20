@@ -59,7 +59,7 @@ RUN git clone https://gcc.gnu.org/git/gcc.git gcc-source ; \
     mkdir -p gcc-12-build && cd gcc-12-build ; \
     ./../configure --enable-languages=c,c++ ; \
     make -j4; \
-    make install; \
+    cd /gcc-source/gcc-12-build/ && make install; \
     cd ../.. && rm -rf gcc-source
 
 # clone vtk

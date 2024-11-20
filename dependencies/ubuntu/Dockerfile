@@ -50,12 +50,15 @@ RUN git clone https://gcc.gnu.org/git/gcc.git gcc-source ; \
     cd gcc-source ; \
     git branch -a ; \
     git checkout remotes/origin/releases/gcc-12 ; \
+    mkdir -p ../gcc-12-build && cd ../gcc-12-build ; \
+    ./../gcc-source/configure --prefix=$HOME/install/gcc-12 --enable-languages=c,c++ ; \
+    cd ../gcc-source ; \
     ./contrib/download_prerequisites ; \
-    mkdir -p gcc-12-build && cd gcc-12-build ; \
-    ./../configure --enable-languages=c,c++ --prefix=$HOME/install/gcc-12 ; \
+    cd ../gcc-12-build ; \
+    ./../gcc-source/configure --enable-languages=c,c++ --prefix=$HOME/install/gcc-12 ; \
     make -j4; \
-    cd /gcc-source/gcc-12-build/ && make install; \
-    cd ../.. && rm -rf gcc-source
+    cd ../gcc-12-build/ && make install; \
+    cd .. && rm -rf gcc-source
 
 # clone vtk
 RUN git clone https://github.com/Kitware/VTK.git; \

@@ -51,6 +51,17 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        flex \
                        gcc-multilib
 
+# install gcc-12
+RUN git clone https://gcc.gnu.org/git/gcc.git gcc-source ; \
+    cd gcc-source ; \
+    git branch -a ; \
+    git checkout remotes/origin/releases/gcc-12 ; \
+    mkdir -p gcc-12-build && cd gcc-12-build ; \
+    ./../configure --enable-languages=c,c++ ; \
+    ninja -j4; \
+    make install; \
+    cd ../.. && rm -rf gcc-source
+
 # clone vtk
 RUN git clone https://github.com/Kitware/VTK.git; \
     cd VTK; \
@@ -68,14 +79,3 @@ RUN git clone https://github.com/Kitware/VTK.git; \
     ninja install -j4; \
 # cleanup
     cd ../.. && rm -rf VTK
-
-# install gcc-12
-RUN git clone https://gcc.gnu.org/git/gcc.git gcc-source; \
-    cd gcc-source; \
-    git branch -a; \
-    git checkout remotes/origin/releases/gcc-12; \
-    mkdir -p ../gcc-12-build && cd ../gcc-12-build ; \
-    ./../gcc-source/configure --enable-languages=c,c++ --prefix=&HOME/install/gcc-12; \
-    ninja -j4; \
-    make install; \
-    cd ../.. && rm -rf gcc-source

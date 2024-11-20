@@ -7,10 +7,10 @@ ARG vtk_version=9.1.0
 ARG vtk_library_version=9.1
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
+ENV LIBRARY_PATH=/usr/local/lib
 ENV LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
-RUN echo $LIBRARY_PATH ;
+RUN echo $LD_LIBRARY_PATH ;
 
 #######################################################
 # Install software requirements and build tools       #

@@ -15,10 +15,13 @@ ENV LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 #######################################################
 
 RUN apt-get update -y && apt-get upgrade -y; \
+    apt-get dist-upgrade -y; \
 # Prepare apt-get build-dep (https://askubuntu.com/questions/496549/error-you-must-put-some-source-uris-in-your-sources-list)
     cp /etc/apt/sources.list /etc/apt/sources.list~; \
     sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list; \
-    apt-get update && apt install build-essential; \
+    apt-get update && apt install build-essential software-properties-common -y; \
+    add-apt-repository ppa:ubuntu-toolchain-r/test -y; \ &&
+    apt-get update -y; \
 # install compiler cmake and other useful stuff
     apt-get install -y sudo \
                        build-essential \
@@ -45,22 +48,11 @@ RUN apt-get update -y && apt-get upgrade -y; \
 # install NetCDF
                        libnetcdf-dev \
 # install libraries for gcc-12
-                       libmpfrc++-dev \
-                       libmpc-dev \
-                       libgmp-dev \
-                       flex \
-                       gcc-multilib
+                       gcc-12 g++-12 -y;
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12; \
+    update-alternatives --config gcc;
 
-# install gcc-12
-RUN git clone https://gcc.gnu.org/git/gcc.git gcc-source ; \
-    cd gcc-source ; \
-    git branch -a ; \
-    git checkout remotes/origin/releases/gcc-12 ; \
-    mkdir -p gcc-12-build && cd gcc-12-build ; \
-    ./../configure --enable-languages=c,c++ --prefix=$HOME/install/gcc-12 ; \
-    make -j4; \
-    cd /gcc-source/gcc-12-build/ && make install; \
-    cd ../.. && rm -rf gcc-source
+
 
 # clone vtk
 RUN git clone https://github.com/Kitware/VTK.git; \

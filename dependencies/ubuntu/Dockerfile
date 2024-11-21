@@ -43,7 +43,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libocct-modeling-algorithms-dev\
                        libocct-modeling-data-dev \
 # install NetCDF
-                       libnetcdf-dev \
+                       libnetcdf-dev
 
 
 # clone vtk

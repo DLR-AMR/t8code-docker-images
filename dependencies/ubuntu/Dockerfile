@@ -1,6 +1,6 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 LABEL org.opencontainers.image.authors="Sandro Elsweijer <sandro.elsweijer@dlr.de>"
-LABEL Description="Ubuntu 20.04 with VTK, NetCDF and OpenCASCADE setup for use with t8code"
+LABEL Description="Ubuntu 22.04 with VTK, NetCDF and OpenCASCADE setup for use with t8code"
 SHELL ["/bin/bash", "-c"]
 
 ARG vtk_version=9.1.0
@@ -44,29 +44,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libocct-modeling-data-dev \
 # install NetCDF
                        libnetcdf-dev \
-#install libs for gcc-12
-                       libmpfrc++-dev \
-                       libmpc-dev \
-                       libgmp-dev \
-                       flex \
-                       gcc-multilib;
 
-# install gcc-12
-RUN git clone https://gcc.gnu.org/git/gcc.git gcc-source ; \
-    cd gcc-source ; \
-    git branch -a ; \
-    git checkout remotes/origin/releases/gcc-12 ; \
-    mkdir -p ../gcc-12-build && cd ../gcc-12-build ; \
-    ./../gcc-source/configure --prefix=$HOME/install/gcc-12 --enable-languages=c,c++ ; \
-    cd ../gcc-source ; \
-    ./contrib/download_prerequisites ; \
-    cd ../gcc-12-build ; \
-    ./../gcc-source/configure --enable-languages=c,c++ --prefix=$HOME/install/gcc-12 ; \
-    make -j4; \
-    make install; \
-    cd .. && rm -rf gcc-source ;\
-    gcc --version; \
-    g++ --version;
 
 # clone vtk
 RUN git clone https://github.com/Kitware/VTK.git; \

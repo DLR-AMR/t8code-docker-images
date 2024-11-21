@@ -1,6 +1,6 @@
 FROM dlramr/t8code-ubuntu:t8-dependencies
 LABEL org.opencontainers.image.authors="Sandro Elsweijer <sandro.elsweijer@dlr.de>"
-LABEL Description="Ubuntu 20.04 with VTK, NetCDF and OpenCASCADE setup and t8code"
+LABEL Description="Ubuntu 22.04 with VTK, NetCDF and OpenCASCADE setup and t8code"
 SHELL ["/bin/bash", "-c"]
 
 ARG t8code_version=1.0.0

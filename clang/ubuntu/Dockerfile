@@ -1,9 +1,11 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 LABEL org.opencontainers.image.authors="Thomas Spenke <thomas.spenke@dlr.de>"
-LABEL Description="Ubuntu 20.04 with clang and openmpi setup to be uses with t8code"
+LABEL Description="Ubuntu 22.04 with clang and openmpi setup to be uses with t8code"
 SHELL ["/bin/bash", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV LIBRARY_PATH=/usr/local/lib
+ENV LD_LIBRARY_PATH=/usr/local/lib
 
 #######################################################
 # Install software requirements and build tools       #

@@ -13,11 +13,18 @@ ENV LD_LIBRARY_PATH=/usr/local/lib
 
 # Install required packages.
 RUN apt-get update -y && apt-get upgrade -y; \
-    apt-get install -y wget tar lld make \
-          libc6-dev libc++-dev libc++abi-dev \
-          pkg-config \
-          git \
-          clang
+    apt-get install -y  wget \
+                        tar \
+                        lld \
+                        make \
+                        cmake \
+                        ninja-build \
+                        libc6-dev \
+                        libc++-dev \
+                        libc++abi-dev \
+                        pkg-config \
+                        git \
+                        clang
 
 ENV OMPI_INSTALL_PATH=/opt/install_openmpi_clang
 

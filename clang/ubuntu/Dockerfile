@@ -13,8 +13,7 @@ ENV LD_LIBRARY_PATH=/usr/local/lib
 
 # Install required packages (without recommends to avoid gcc).
 RUN apt-get update -y && apt-get upgrade -y; \
-    apt-get install -y  --no-install-recommends \
-                        wget \
+    apt-get install -y  wget \
                         tar \
                         lld \
                         make \
@@ -26,9 +25,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
                         pkg-config \
                         git \
                         clang \
-                        ca-certificates; \
-    rm -rf /var/lib/apt/lists/*
-
+                        ca-certificates
 # Export openmpi path to later use it in the github workflow.
 ENV OMPI_INSTALL_PATH=/opt/install_openmpi_clang
 ENV PATH="$OMPI_INSTALL_PATH/bin:$PATH"

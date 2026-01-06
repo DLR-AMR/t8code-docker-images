@@ -25,7 +25,8 @@ RUN apt-get update -y && apt-get upgrade -y; \
                         libc++abi-dev \
                         pkg-config \
                         git \
-                        clang; \
+                        clang \
+                        ca-certificates; \
     rm -rf /var/lib/apt/lists/*
 
 # Export openmpi path to later use it in the github workflow.

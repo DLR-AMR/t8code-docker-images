@@ -11,9 +11,10 @@ ENV LD_LIBRARY_PATH=/usr/local/lib
 # Install software requirements and build tools       #
 #######################################################
 
-# Install required packages.
+# Install required packages (without recommends to avoid gcc).
 RUN apt-get update -y && apt-get upgrade -y; \
-    apt-get install -y  wget \
+    apt-get install -y  --no-install-recommends \
+                        wget \
                         tar \
                         lld \
                         make \
@@ -24,9 +25,12 @@ RUN apt-get update -y && apt-get upgrade -y; \
                         libc++abi-dev \
                         pkg-config \
                         git \
-                        clang
+                        clang; \
+    rm -rf /var/lib/apt/lists/*
 
+# Export openmpi path to later use it in the github workflow.
 ENV OMPI_INSTALL_PATH=/opt/install_openmpi_clang
+ENV PATH="$OMPI_INSTALL_PATH/bin:$PATH"
 
 # Install openmpi with clang compiler.
 RUN mkdir install_ompi_clang; \

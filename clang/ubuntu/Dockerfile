@@ -28,7 +28,13 @@ RUN apt-get update -y && apt-get upgrade -y; \
                         pkg-config \
                         git \
                         clang \
-                        ca-certificates
+                        ca-certificates \
+# Added for vtk library
+                        libgl1-mesa-dev libx11-dev libxmu-dev libxi-dev \
+                        libxt-dev libxrender-dev libxrandr-dev \
+                        libwayland-dev wayland-protocols \
+                        libfontconfig1-dev libfreetype6-dev \
+                        libxkbcommon-dev libdrm-dev
 # Export openmpi path to later use it in the github workflow.
 ENV OMPI_INSTALL_PATH=/opt/install_openmpi_clang
 ENV PATH="$OMPI_INSTALL_PATH/bin:$PATH"

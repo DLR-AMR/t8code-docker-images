@@ -133,7 +133,6 @@ RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
         -DUSE_FREETYPE=ON \
         -DUSE_OPENGL=ON \
         -GNinja; \
-        
 # build and install OpenCASCADE
     ninja -j4; \
     ninja install -j4; \

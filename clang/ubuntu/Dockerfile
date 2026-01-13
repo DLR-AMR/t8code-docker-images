@@ -17,6 +17,7 @@ ENV LD_LIBRARY_PATH=/usr/local/lib
 # Install required packages (without recommends to avoid gcc).
 RUN apt-get update -y && apt-get upgrade -y; \
     apt-get install -y  wget \
+                        sudo \
                         tar \
                         lld \
                         make \
@@ -86,7 +87,7 @@ RUN wget https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.9.2.tar.gz; \
     --enable-shared \
     CC=${OMPI_INSTALL_PATH}/bin/mpicc; \
     make -j4; \
-    sudo make install; \
+    make install; \
     cd ..
 
 ENV VTK_INSTALL_PATH=/opt/install_vtk_clang

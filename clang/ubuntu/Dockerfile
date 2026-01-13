@@ -108,8 +108,8 @@ RUN git clone https://github.com/Kitware/VTK.git; \
         -DNetCDF_ROOT=${NETCDF_INSTALL_PATH} \
         -DHDF5_ROOT=${HDF5_INSTALL_PATH} \
 # build and install vtk
-    make -j4; \
-    make install -j4; \
+    ninja -j4; \
+    ninja install -j4; \
 # cleanup
     cd ../.. && rm -rf VTK
 
@@ -128,10 +128,11 @@ RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
         -DBUILD_LIBRARY_TYPE=Shared \
         -DUSE_TBB=ON \
         -DUSE_FREETYPE=ON \
-        -DUSE_OPENGL=ON; \
+        -DUSE_OPENGL=ON \
+        -DBUILD_DRAW=OFF; \
 # build and install OpenCASCADE
-    make -j4; \
-    make install -j4; \
+    ninja -j4; \
+    ninja install -j4; \
 # cleanup
     cd ../.. && rm -rf OCCT
 

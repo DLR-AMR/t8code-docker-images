@@ -34,7 +34,12 @@ RUN apt-get update -y && apt-get upgrade -y; \
                         libxt-dev libxrender-dev libxrandr-dev \
                         libwayland-dev wayland-protocols \
                         libfontconfig1-dev libfreetype6-dev \
-                        libxkbcommon-dev libdrm-dev
+                        libxkbcommon-dev libdrm-dev \
+# Added for OpenCASCADE
+                        libtbb-dev \
+                        libpng-dev libjpeg-dev libtiff-dev \
+                        libopenexr-dev
+
 # Export openmpi path to later use it in the github workflow.
 ENV OMPI_INSTALL_PATH=/opt/install_openmpi_clang
 ENV PATH="$OMPI_INSTALL_PATH/bin:$PATH"
@@ -58,18 +63,40 @@ RUN git clone https://github.com/Kitware/VTK.git; \
 # configure build with cmake
     mkdir -p build && cd build ; \
     cmake .. \
-    -DCMAKE_C_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicc \
-    -DCMAKE_CXX_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicxx \
-    -DCMAKE_INSTALL_PREFIX=${VTK_INSTALL_PATH} \
-    -DBUILD_TESTING=OFF \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DVTK_USE_MPI=ON \
-    -DVTK_GROUP_ENABLE_MPI=YES 
+        -DCMAKE_C_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicc \
+        -DCMAKE_CXX_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicxx \
+        -DCMAKE_INSTALL_PREFIX=${VTK_INSTALL_PATH} \
+        -DBUILD_TESTING=OFF \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DVTK_USE_MPI=ON \
+        -DVTK_GROUP_ENABLE_MPI=YES; \
 # build and install vtk
     make -j4; \
     make install -j4; \
 # cleanup
     cd ../.. && rm -rf VTK
+
+ENV OCCT_INSTALL_PATH=/opt/install_opencascade_clang
+
+RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
+    cd OCCT
+    git checkout V7_8_0
+    # configure build with cmake
+    mkdir -p build && cd build ; \
+    cmake .. \
+        -DCMAKE_C_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicc \
+        -DCMAKE_CXX_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicxx \
+        -DCMAKE_INSTALL_PREFIX=${OCCT_INSTALL_PATH} \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_LIBRARY_TYPE=Shared \
+        -DUSE_TBB=ON \
+        -DUSE_FREETYPE=ON \
+        -DUSE_OPENGL=ON
+# build and install OpenCASCADE
+    make -j4; \
+    make install -j4; \
+# cleanup
+    cd ../.. && rm -rf OCCT
 
 
 

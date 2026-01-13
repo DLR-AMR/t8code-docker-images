@@ -97,7 +97,7 @@ RUN git clone https://github.com/Kitware/VTK.git; \
     cd VTK; \
     git checkout v${vtk_version}; \
 # configure build with cmake
-    mkdir -p build && cd build ; \
+    rm -rf build && mkdir -p build && cd build ; \
     cmake .. \
         -DCMAKE_C_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicc \
         -DCMAKE_CXX_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicxx \
@@ -121,7 +121,7 @@ RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
     cd OCCT; \
     git checkout V7_8_0; \
     # configure build with cmake
-    mkdir -p build && cd build ; \
+    rm -rf build && mkdir -p build && cd build ; \
     cmake .. \
         -DCMAKE_C_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicc \
         -DCMAKE_CXX_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicxx \

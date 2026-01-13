@@ -64,8 +64,7 @@ RUN git clone https://github.com/Kitware/VTK.git; \
     -DBUILD_TESTING=OFF \
     -DCMAKE_BUILD_TYPE=Release \
     -DVTK_USE_MPI=ON \
-    -DVTK_GROUP_ENABLE_MPI=YES \
-    -GNinja; \
+    -DVTK_GROUP_ENABLE_MPI=YES 
 # build and install vtk
     make -j4; \
     make install -j4; \

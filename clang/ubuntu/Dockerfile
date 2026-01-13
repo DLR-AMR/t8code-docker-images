@@ -59,9 +59,9 @@ RUN mkdir install_ompi_clang; \
 
 # Install HDF5
 ENV HDF5_INSTALL_PATH=/opt/install_hdf5_clang
-RUN wget https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5-1_14_4.tar.gz; \
-    tar xf hdf5-1_14_4.tar.gz; \
-    cd hdf5-hdf5-1_14_4; \
+RUN wget https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.6/hdf5-1.14.6.tar.gz \
+    tar xf hdf5-1.14.6.tar.gz; \
+    cd hdf5-1.14.6; \
     ./configure \
     --prefix=${HDF5_INSTALL_PATH} \
     --enable-parallel \

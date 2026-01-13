@@ -79,8 +79,8 @@ RUN git clone https://github.com/Kitware/VTK.git; \
 ENV OCCT_INSTALL_PATH=/opt/install_opencascade_clang
 
 RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
-    cd OCCT
-    git checkout V7_8_0
+    cd OCCT; \
+    git checkout V7_8_0; \
     # configure build with cmake
     mkdir -p build && cd build ; \
     cmake .. \
@@ -91,7 +91,7 @@ RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
         -DBUILD_LIBRARY_TYPE=Shared \
         -DUSE_TBB=ON \
         -DUSE_FREETYPE=ON \
-        -DUSE_OPENGL=ON
+        -DUSE_OPENGL=ON; \
 # build and install OpenCASCADE
     make -j4; \
     make install -j4; \

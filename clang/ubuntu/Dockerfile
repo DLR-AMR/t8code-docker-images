@@ -105,9 +105,10 @@ RUN git clone https://github.com/Kitware/VTK.git; \
         -DBUILD_TESTING=OFF \
         -DCMAKE_BUILD_TYPE=Release \
         -DVTK_USE_MPI=ON \
-        -DVTK_GROUP_ENABLE_MPI=YES; \
+        -DVTK_GROUP_ENABLE_MPI=YES \
         -DNetCDF_ROOT=${NETCDF_INSTALL_PATH} \
         -DHDF5_ROOT=${HDF5_INSTALL_PATH} \
+        -GNinja; \
 # build and install vtk
     ninja -j4; \
     ninja install -j4; \
@@ -115,7 +116,7 @@ RUN git clone https://github.com/Kitware/VTK.git; \
     cd ../.. && rm -rf VTK
 
 # Install OpenCASCADE
-ENV OCCT_INSTALL_PATH=/opt/install_opencascade_clang
+ENV OCCT_INSTALL_PATH=/opt/install_occt_clang
 RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
     cd OCCT; \
     git checkout V7_8_0; \
@@ -126,11 +127,13 @@ RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
         -DCMAKE_CXX_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicxx \
         -DCMAKE_INSTALL_PREFIX=${OCCT_INSTALL_PATH} \
         -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_DRAW=OFF \
         -DBUILD_LIBRARY_TYPE=Shared \
         -DUSE_TBB=ON \
         -DUSE_FREETYPE=ON \
         -DUSE_OPENGL=ON \
-        -DBUILD_DRAW=OFF; \
+        -GNinja; \
+        
 # build and install OpenCASCADE
     ninja -j4; \
     ninja install -j4; \

@@ -49,6 +49,8 @@ RUN mkdir install_ompi_clang; \
     make -j$(nproc); \
     make install
 
+ENV VTK_INSTALL_PATH=/opt/install_vtk_clang
+
 # Install vtk library with clang compiler
 RUN git clone https://github.com/Kitware/VTK.git; \
     cd VTK; \
@@ -58,6 +60,7 @@ RUN git clone https://github.com/Kitware/VTK.git; \
     cmake .. \
     -DCMAKE_C_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicc \
     -DCMAKE_CXX_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicxx \
+    -DCMAKE_INSTALL_PREFIX=${VTK_INSTALL_PATH} \
     -DBUILD_TESTING=OFF \
     -DCMAKE_BUILD_TYPE=Release \
     -DVTK_USE_MPI=ON \

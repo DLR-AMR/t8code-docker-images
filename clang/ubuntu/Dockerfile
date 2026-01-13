@@ -50,6 +50,8 @@ RUN git clone https://github.com/Kitware/VTK.git; \
 # configure build with cmake
     mkdir -p build && cd build ; \
     cmake .. \
+    -DCMAKE_C_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicc \
+    -DCMAKE_CXX_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicxx \
     -DBUILD_TESTING=OFF \
     -DCMAKE_BUILD_TYPE=Release \
     -DVTK_USE_MPI=ON \

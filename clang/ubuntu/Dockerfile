@@ -38,7 +38,10 @@ RUN apt-get update -y && apt-get upgrade -y; \
 # Added for OpenCASCADE
                         libtbb-dev \
                         libpng-dev libjpeg-dev libtiff-dev \
-                        libopenexr-dev
+                        libopenexr-dev \
+# Added for netcdf
+                        autoconf automake libtool m4 \
+                        zlib1g-dev libcurl4-openssl-dev
 
 # Export openmpi path to later use it in the github workflow.
 ENV OMPI_INSTALL_PATH=/opt/install_openmpi_clang
@@ -53,6 +56,38 @@ RUN mkdir install_ompi_clang; \
     CC=clang CXX=clang++ ./configure --prefix=$OMPI_INSTALL_PATH; \
     make -j$(nproc); \
     make install
+
+# Install HDF5
+ENV HDF5_INSTALL_PATH=/opt/install_hdf5_clang
+RUN wget https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5-1_14_4.tar.gz; \
+    tar xf hdf5-1_14_4.tar.gz; \
+    cd hdf5-hdf5-1_14_4; \
+    ./configure \
+    --prefix=${HDF5_INSTALL_PATH} \
+    --enable-parallel \
+    --enable-shared \
+    --enable-hl \
+    CC=${OMPI_INSTALL_PATH}/bin/mpicc \
+    CXX=${OMPI_INSTALL_PATH}/bin/mpicxx; \
+    make -j4 ; \
+    make install; \
+    cd ..
+
+# Install netcdf-c
+ENV NETCDF_INSTALL_PATH=/opt/install_netcdf_clang
+RUN wget https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.9.2.tar.gz; \
+    tar xf v4.9.2.tar.gz; \
+    cd netcdf-c-4.9.2; \
+    export CPPFLAGS="-I${HDF5_INSTALL_PATH}/include"; \
+    export LDFLAGS="-L${HDF5_INSTALL_PATH}/lib"; \
+    ./configure \
+    --prefix=${NETCDF_INSTALL_PATH} \
+    --enable-parallel-tests \
+    --enable-shared \
+    CC=${OMPI_INSTALL_PATH}/bin/mpicc; \
+    make -j4; \
+    sudo make install; \
+    cd ..
 
 ENV VTK_INSTALL_PATH=/opt/install_vtk_clang
 
@@ -70,14 +105,16 @@ RUN git clone https://github.com/Kitware/VTK.git; \
         -DCMAKE_BUILD_TYPE=Release \
         -DVTK_USE_MPI=ON \
         -DVTK_GROUP_ENABLE_MPI=YES; \
+        -DNetCDF_ROOT=${NETCDF_INSTALL_PATH} \
+        -DHDF5_ROOT=${HDF5_INSTALL_PATH} \
 # build and install vtk
     make -j4; \
     make install -j4; \
 # cleanup
     cd ../.. && rm -rf VTK
 
+# Install OpenCASCADE
 ENV OCCT_INSTALL_PATH=/opt/install_opencascade_clang
-
 RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
     cd OCCT; \
     git checkout V7_8_0; \

@@ -97,7 +97,7 @@ RUN ls -l /usr/lib/x86_64-linux-gnu/libtbb*; \
         -D3RDPARTY_TBB_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu \
         -D3RDPARTY_TBBMALLOC_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu \
         -DBUILD_LIBRARY_TYPE=Shared \
-        -DUSE_TBB=ON \
+        -DUSE_TBB=OFF \
         -DUSE_FREETYPE=ON \
         -DUSE_OPENGL=ON \
         -GNinja; \

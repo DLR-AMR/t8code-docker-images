@@ -73,6 +73,8 @@ RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
         -DBUILD_DRAW=OFF \
         -DUSE_TCL=OFF \
         -DUSE_TK=OFF \
+        -D3RDPARTY_TCL_INCLUDE_DIR:PATH=IGNORE \
+        -D3RDPARTY_TK_INCLUDE_DIR:PATH=IGNORE \
         -DBUILD_LIBRARY_TYPE=Shared \
         -DUSE_TBB=ON \
         -DUSE_FREETYPE=ON \
@@ -134,8 +136,6 @@ RUN git clone https://github.com/Kitware/VTK.git; \
         -DVTK_GROUP_ENABLE_MPI=YES \
         -DNetCDF_ROOT=${NETCDF_INSTALL_PATH} \
         -DHDF5_ROOT=${HDF5_INSTALL_PATH} \
-        -D3RDPARTY_TCL_INCLUDE_DIR:PATH=IGNORE \
-        -D3RDPARTY_TK_INCLUDE_DIR:PATH=IGNORE \
         -GNinja; \
 # build and install vtk
     ninja -j4; \

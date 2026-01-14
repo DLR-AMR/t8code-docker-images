@@ -77,7 +77,7 @@ RUN ls -l /usr/lib/x86_64-linux-gnu/libtbb*; \
     set -e; \
     git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
     cd OCCT; \
-    git checkout V7_8_0; \
+    # git checkout V7_8_0; \
     # configure build with cmake
     rm -rf build && mkdir -p build && cd build ; \
     cmake .. \
@@ -97,7 +97,7 @@ RUN ls -l /usr/lib/x86_64-linux-gnu/libtbb*; \
         -D3RDPARTY_TBB_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu \
         -D3RDPARTY_TBBMALLOC_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu \
         -DBUILD_LIBRARY_TYPE=Shared \
-        -DUSE_TBB=OFF \
+        -DUSE_TBB=ON \
         -DUSE_FREETYPE=ON \
         -DUSE_OPENGL=ON \
         -GNinja; \

@@ -47,7 +47,9 @@ RUN apt-get update -y && apt-get upgrade -y; \
 # Required for OpenCASCADE
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tcl-dev \
-    tk-dev
+    tk-dev \
+    libtbb-dev
+
 
 # Export openmpi path to later use it in the github workflow.
 ENV OMPI_INSTALL_PATH=/opt/install_openmpi_clang

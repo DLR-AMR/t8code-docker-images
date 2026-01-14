@@ -66,8 +66,9 @@ RUN mkdir install_ompi_clang; \
     make install
 
 RUN cd /usr/lib/x86_64-linux-gnu; \
-    ln -sf libtbb.so.12 libtbb.so; \
-    ln -sf libtbbmalloc.so.2 libtbbmalloc.so
+    rm libtbb.so libtbbmalloc.so; \
+    ln -s libtbb.so.12 libtbb.so; \
+    ln -s libtbbmalloc.so.2 libtbbmalloc.so
 
 
 # Install OpenCASCADE

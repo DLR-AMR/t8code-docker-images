@@ -51,7 +51,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libtbb-dev \
     libtbb2
 
-
 # Export openmpi path to later use it in the github workflow.
 ENV OMPI_INSTALL_PATH=/opt/install_openmpi_clang
 ENV PATH="$OMPI_INSTALL_PATH/bin:$PATH"
@@ -70,7 +69,8 @@ RUN mkdir install_ompi_clang; \
 
 # Install OpenCASCADE
 ENV OCCT_INSTALL_PATH=/opt/install_occt_clang
-RUN set -e; \
+RUN ls -l /usr/lib/x86_64-linux-gnu/libtbb*; \
+    set -e; \
     git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
     cd OCCT; \
     git checkout V7_8_0; \

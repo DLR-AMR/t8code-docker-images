@@ -65,6 +65,9 @@ RUN mkdir install_ompi_clang; \
     make -j$(nproc); \
     make install
 
+RUN cd /usr/lib/x86_64-linux-gnu; \
+    ln -sf libtbb.so.12 libtbb.so; \
+    ln -sf libtbbmalloc.so.2 libtbbmalloc.so; \
 
 
 # Install OpenCASCADE
@@ -90,6 +93,8 @@ RUN ls -l /usr/lib/x86_64-linux-gnu/libtbb*; \
         -D3RDPARTY_TK_INCLUDE_DIR:PATH=IGNORE \
         -D3RDPARTY_TK_LIBRARY:FILEPATH=IGNORE \
         -D3RDPARTY_TK_LIBRARY_DIR:PATH=IGNORE \
+        -D3RDPARTY_TBB_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu \
+        -D3RDPARTY_TBBMALLOC_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu \
         -DBUILD_LIBRARY_TYPE=Shared \
         -DUSE_TBB=ON \
         -DUSE_FREETYPE=ON \

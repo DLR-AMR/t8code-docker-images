@@ -58,6 +58,32 @@ RUN mkdir install_ompi_clang; \
     make -j$(nproc); \
     make install
 
+# Install OpenCASCADE
+ENV OCCT_INSTALL_PATH=/opt/install_occt_clang
+RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
+    cd OCCT; \
+    git checkout V7_8_0; \
+    # configure build with cmake
+    rm -rf build && mkdir -p build && cd build ; \
+    cmake .. \
+        -DCMAKE_C_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicc \
+        -DCMAKE_CXX_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicxx \
+        -DCMAKE_INSTALL_PREFIX=${OCCT_INSTALL_PATH} \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_DRAW=OFF \
+        -DUSE_TCL=OFF \
+        -DUSE_TK=OFF \
+        -DBUILD_LIBRARY_TYPE=Shared \
+        -DUSE_TBB=ON \
+        -DUSE_FREETYPE=ON \
+        -DUSE_OPENGL=ON \
+        -GNinja; \
+# build and install OpenCASCADE
+    ninja -j4; \
+    ninja install -j4; \
+# cleanup
+    cd ../.. && rm -rf OCCT
+
 # Install HDF5
 ENV HDF5_INSTALL_PATH=/opt/install_hdf5_clang
 RUN wget https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.6/hdf5-1.14.6.tar.gz; \
@@ -114,30 +140,3 @@ RUN git clone https://github.com/Kitware/VTK.git; \
     ninja install -j4; \
 # cleanup
     cd ../.. && rm -rf VTK
-
-# Install OpenCASCADE
-ENV OCCT_INSTALL_PATH=/opt/install_occt_clang
-RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
-    cd OCCT; \
-    git checkout V7_8_0; \
-    # configure build with cmake
-    rm -rf build && mkdir -p build && cd build ; \
-    cmake .. \
-        -DCMAKE_C_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicc \
-        -DCMAKE_CXX_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicxx \
-        -DCMAKE_INSTALL_PREFIX=${OCCT_INSTALL_PATH} \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DBUILD_DRAW=OFF \
-        -DBUILD_LIBRARY_TYPE=Shared \
-        -DUSE_TBB=ON \
-        -DUSE_FREETYPE=ON \
-        -DUSE_OPENGL=ON \
-        -GNinja; \
-# build and install OpenCASCADE
-    ninja -j4; \
-    ninja install -j4; \
-# cleanup
-    cd ../.. && rm -rf OCCT
-
-
-

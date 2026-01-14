@@ -48,7 +48,8 @@ RUN apt-get update -y && apt-get upgrade -y; \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tcl-dev \
     tk-dev \
-    libtbb-dev
+    libtbb-dev \
+    libtbb2
 
 
 # Export openmpi path to later use it in the github workflow.

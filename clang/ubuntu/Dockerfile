@@ -70,7 +70,8 @@ RUN mkdir install_ompi_clang; \
 
 # Install OpenCASCADE
 ENV OCCT_INSTALL_PATH=/opt/install_occt_clang
-RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
+RUN set -e; \
+    git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
     cd OCCT; \
     git checkout V7_8_0; \
     # configure build with cmake
@@ -83,6 +84,12 @@ RUN git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
         -DBUILD_DRAW=OFF \
         -DUSE_TCL=OFF \
         -DUSE_TK=OFF \
+        -D3RDPARTY_TCL_INCLUDE_DIR:PATH=IGNORE \
+        -D3RDPARTY_TCL_LIBRARY:FILEPATH=IGNORE \
+        -D3RDPARTY_TCL_LIBRARY_DIR:PATH=IGNORE \
+        -D3RDPARTY_TK_INCLUDE_DIR:PATH=IGNORE \
+        -D3RDPARTY_TK_LIBRARY:FILEPATH=IGNORE \
+        -D3RDPARTY_TK_LIBRARY_DIR:PATH=IGNORE \
         -DBUILD_LIBRARY_TYPE=Shared \
         -DUSE_TBB=ON \
         -DUSE_FREETYPE=ON \

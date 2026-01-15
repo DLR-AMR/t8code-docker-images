@@ -98,7 +98,7 @@ RUN ls -l /usr/lib/x86_64-linux-gnu/libtbb*; \
         -D3RDPARTY_TBBMALLOC_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu \
         -DUSE_TBB=ON \
         -DTBB_INCLUDE_DIRS=/usr/include \
-        -DTBB_LIBRARIES="/usr/lib/x86_64-linux-gnu/libtbb.so;/usr/lib/x86_64-linux-gnu/libtbbmalloc.so"
+        -DTBB_LIBRARIES="/usr/lib/x86_64-linux-gnu/libtbb.so;/usr/lib/x86_64-linux-gnu/libtbbmalloc.so" \
         -DBUILD_LIBRARY_TYPE=Shared \
         -DUSE_FREETYPE=ON \
         -DUSE_OPENGL=ON \

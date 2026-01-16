@@ -96,7 +96,7 @@ RUN ls -l /usr/lib/x86_64-linux-gnu/libtbb*; \
         -D3RDPARTY_TK_LIBRARY_DIR:PATH=IGNORE \
         -D3RDPARTY_TBB_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu \
         -D3RDPARTY_TBBMALLOC_LIBRARY_DIR=/usr/lib/x86_64-linux-gnu \
-        -DUSE_TBB=ON \
+        -DUSE_TBB=OFF \
         -DTBB_INCLUDE_DIRS=/usr/include \
         -DTBB_LIBRARIES="/usr/lib/x86_64-linux-gnu/libtbb.so;/usr/lib/x86_64-linux-gnu/libtbbmalloc.so" \
         -DBUILD_LIBRARY_TYPE=Shared \
@@ -111,9 +111,13 @@ RUN ls -l /usr/lib/x86_64-linux-gnu/libtbb*; \
 
 # # Install HDF5
 # ENV HDF5_INSTALL_PATH=/opt/install_hdf5_clang
-# RUN wget https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.6/hdf5-1.14.6.tar.gz; \
-#     tar xf hdf5-1.14.6.tar.gz; \
-#     cd hdf5-1.14.6; \
+# # RUN wget https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.6/hdf5-1.14.6.tar.gz; \
+# #     tar xf hdf5-1.14.6.tar.gz; \
+# #     cd hdf5-1.14.6; \
+# RUN wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.7/src/hdf5-1.10.7.tar.gz
+#     tar xf hdf5-1.10.7.tar.gz
+    
+
 #     ./configure \
 #     --prefix=${HDF5_INSTALL_PATH} \
 #     --enable-parallel \

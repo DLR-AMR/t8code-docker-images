@@ -80,9 +80,7 @@ ENV CPATH="$OMPI_INSTALL_PATH/include:$CPATH"
 
 # Install OpenCASCADE
 ENV OCCT_INSTALL_PATH=$CUSTOM_CLANG_INSTALL/occt_clang
-RUN ls -l /usr/lib/x86_64-linux-gnu/libtbb*; \
-    set -e; \
-    cd $CUSTOM_CLANG_BUILD; \
+RUN cd $CUSTOM_CLANG_BUILD; \
     git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
     cd OCCT; \
     git checkout V7_5_1; \
@@ -112,9 +110,7 @@ RUN ls -l /usr/lib/x86_64-linux-gnu/libtbb*; \
         -GNinja; \
 # build and install OpenCASCADE
     ninja -j4; \
-    ninja install -j4; \
-# cleanup
-    cd ../.. && rm -rf OCCT
+    ninja install
 
 # Add OpenCASCADE to paths and environment variables
 ENV PATH="$OCCT_INSTALL_PATH/bin:$PATH"
@@ -138,10 +134,9 @@ RUN cd $CUSTOM_CLANG_BUILD; \
         -DHDF5_ENABLE_Z_LIB_SUPPORT=ON \
         -DZLIB_INCLUDE_DIR=/usr/include \
         -DZLIB_LIBRARY=/usr/lib/x86_64-linux-gnu/libz.so;
-        -GNinja\
+        -GNinja; \
     ninja -j4 ; \
-    ninja install; \
-    cd ..
+    ninja install
 
 # Add HDF5 to paths and environment variables
 ENV PATH="$HDF5_INSTALL_PATH/bin:$PATH"
@@ -168,8 +163,7 @@ RUN cd $CUSTOM_CLANG_BUILD; \
         -DENABLE_TESTS=OFF \
         -GNinja; \
     ninja -j4; \
-    ninja install; \
-    cd ..
+    ninja install
 
 # Add NetCDF to paths and environment variables
 ENV PATH="$NETCDF_INSTALL_PATH/bin:$PATH"
@@ -180,7 +174,8 @@ ENV CPATH="$NETCDF_INSTALL_PATH/include:$CPATH"
 ENV VTK_INSTALL_PATH=$CUSTOM_CLANG_INSTALL/vtk_clang
 
 # Install vtk library with clang compiler
-RUN git clone https://github.com/Kitware/VTK.git; \
+RUN cd $CUSTOM_CLANG_BUILD; \
+    git clone https://github.com/Kitware/VTK.git; \
     cd VTK; \
     git checkout v${vtk_version}; \
 # configure build with cmake
@@ -196,9 +191,7 @@ RUN git clone https://github.com/Kitware/VTK.git; \
         -GNinja; \
 # build and install vtk
     ninja -j4; \
-    ninja install -j4; \
-# cleanup
-    cd ../.. && rm -rf VTK
+    ninja install -j4
 
 # Add NetCDF to paths and environment variables
 ENV PATH="$VTK_INSTALL_PATH/bin:$PATH"
@@ -206,6 +199,8 @@ ENV LIBRARY_PATH="$VTK_INSTALL_PATH/lib:$LIBRARY_PATH"
 ENV LD_LIBRARY_PATH="$VTK_INSTALL_PATH/lib:$LD_LIBRARY_PATH"
 ENV CPATH="$VTK_INSTALL_PATH/include:$CPATH"
 
+# Clean up build directories
+RUN rm -rf $CUSTOM_CLANG_BUILD
 
 # BACKUP lines
         # -DHDF5_ROOT=${HDF5_INSTALL_PATH} \

@@ -115,39 +115,44 @@ RUN ls -l /usr/lib/x86_64-linux-gnu/libtbb*; \
     cd ../.. && rm -rf OCCT
 
 # Install HDF5
-# ENV HDF5_INSTALL_PATH=/opt/install_hdf5_clang
-# # RUN wget https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.6/hdf5-1.14.6.tar.gz; \
-# #     tar xf hdf5-1.14.6.tar.gz; \
-# #     cd hdf5-1.14.6; \
-# RUN wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.7/src/hdf5-1.10.7.tar.gz; \
-#     tar xf hdf5-1.10.7.tar.gz; \
-#     cd hdf5-1.10.7; \
-#     ./configure \
-#     --prefix=${HDF5_INSTALL_PATH} \
-#     --enable-parallel \
-#     --enable-shared \
-#     --enable-hl \
-#     CC=${OMPI_INSTALL_PATH}/bin/mpicc \
-#     CXX=${OMPI_INSTALL_PATH}/bin/mpicxx; \
-#     make -j4 ; \
-#     make install; \
-#     cd ..
+ENV HDF5_INSTALL_PATH=$CUSTOM_CLANG_INSTALL/hdf5_clang
+# RUN wget https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.6/hdf5-1.14.6.tar.gz; \
+#     tar xf hdf5-1.14.6.tar.gz; \
+#     cd hdf5-1.14.6; \
+RUN cd $CUSTOM_CLANG_BUILD; \
+    wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.7/src/hdf5-1.10.7.tar.gz; \
+    tar xf hdf5-1.10.7.tar.gz; \
+    cd hdf5-1.10.7; \
+    ./configure \
+    --prefix=${HDF5_INSTALL_PATH} \
+    --enable-parallel \
+    --enable-shared \
+    --enable-hl \
+    CC=${OMPI_INSTALL_PATH}/bin/mpicc \
+    CXX=${OMPI_INSTALL_PATH}/bin/mpicxx; \
+    make -j4 ; \
+    make install; \
+    cd ..
 
-# # Install netcdf-c
-# ENV NETCDF_INSTALL_PATH=/opt/install_netcdf_clang
+# Install netcdf-c
+ENV NETCDF_INSTALL_PATH=$CUSTOM_CLANG_INSTALL/netcdf_clang
 # RUN wget https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.9.2.tar.gz; \
 #     tar xf v4.9.2.tar.gz; \
 #     cd netcdf-c-4.9.2; \
-#     export CPPFLAGS="-I${HDF5_INSTALL_PATH}/include"; \
-#     export LDFLAGS="-L${HDF5_INSTALL_PATH}/lib"; \
-#     ./configure \
-#     --prefix=${NETCDF_INSTALL_PATH} \
-#     --enable-parallel-tests \
-#     --enable-shared \
-#     CC=${OMPI_INSTALL_PATH}/bin/mpicc; \
-#     make -j4; \
-#     make install; \
-#     cd ..
+RUN cd $CUSTOM_CLANG_BUILD; \
+    wget https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.8.1.tar.gz -O netcdf-c-4.8.1.tar.gz; \
+    tar xf netcdf-c-4.8.1.tar.gz; \
+    cd netcdf-c-4.8.1; \
+    export CPPFLAGS="-I${HDF5_INSTALL_PATH}/include"; \
+    export LDFLAGS="-L${HDF5_INSTALL_PATH}/lib"; \
+    ./configure \
+    --prefix=${NETCDF_INSTALL_PATH} \
+    --enable-parallel-tests \
+    --enable-shared \
+    CC=${OMPI_INSTALL_PATH}/bin/mpicc; \
+    make -j4; \
+    make install; \
+    cd ..
 
 # ENV VTK_INSTALL_PATH=/opt/install_vtk_clang
 

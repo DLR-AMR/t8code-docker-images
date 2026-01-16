@@ -50,7 +50,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libocct-modeling-algorithms-dev\
                        libocct-modeling-data-dev \
 # install NetCDF
-                       libnetcdf-dev
+                       libnetcdf-dev \
 # # Added for OpenCASCADE
 #                         libtbb-dev \
 #                         libpng-dev libjpeg-dev libtiff-dev \

@@ -53,11 +53,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libtbb-dev \
     libtbb2
 
+
+# Prepare folders once
+RUN rm -rf $CUSTOM_CLANG_BUILD && mkdir -p $CUSTOM_CLANG_BUILD && \
+    rm -rf $CUSTOM_CLANG_INSTALL && mkdir -p $CUSTOM_CLANG_INSTALL
+
 # Export openmpi path to later use it in the github workflow.
 ENV OMPI_INSTALL_PATH=$CUSTOM_CLANG_INSTALL/openmpi_clang
-ENV PATH="$OMPI_INSTALL_PATH/bin:$PATH"
-
-RUN mkdir -p $CUSTOM_CLANG_BUILD && mkdir -p $CUSTOM_CLANG_INSTALL
 
 # Install openmpi with clang compiler.
 # TODO: Make version an ARG as in vtk?
@@ -69,10 +71,11 @@ RUN cd $CUSTOM_CLANG_BUILD; \
     make -j$(nproc); \
     make install
 
-# RUN cd /usr/lib/x86_64-linux-gnu; \
-#     rm libtbb.so libtbbmalloc.so; \
-#     ln -s libtbb.so.12 libtbb.so; \
-#     ln -s libtbbmalloc.so.2 libtbbmalloc.so
+# Add OpenMPI to paths and environment variables
+ENV PATH="$OMPI_INSTALL_PATH/bin:$PATH"
+ENV LIBRARY_PATH="$OMPI_INSTALL_PATH/lib:$LIBRARY_PATH"
+ENV LD_LIBRARY_PATH="$OMPI_INSTALL_PATH/lib:$LD_LIBRARY_PATH"
+ENV CPATH="$OMPI_INSTALL_PATH/include:$CPATH"
 
 
 # Install OpenCASCADE
@@ -89,7 +92,6 @@ RUN ls -l /usr/lib/x86_64-linux-gnu/libtbb*; \
         -DCMAKE_C_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicc \
         -DCMAKE_CXX_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicxx \
         -DCMAKE_INSTALL_PREFIX=${OCCT_INSTALL_PATH} \
-        -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_DRAW=OFF \
         -DUSE_TCL=OFF \
         -DUSE_TK=OFF \
@@ -114,25 +116,39 @@ RUN ls -l /usr/lib/x86_64-linux-gnu/libtbb*; \
 # cleanup
     cd ../.. && rm -rf OCCT
 
+# Add OpenCASCADE to paths and environment variables
+ENV PATH="$OCCT_INSTALL_PATH/bin:$PATH"
+ENV LIBRARY_PATH="$OCCT_INSTALL_PATH/lib:$LIBRARY_PATH"
+ENV LD_LIBRARY_PATH="$OCCT_INSTALL_PATH/lib:$LD_LIBRARY_PATH"
+ENV CPATH="$OCCT_INSTALL_PATH/include:$CPATH"
+
+
 # Install HDF5
 ENV HDF5_INSTALL_PATH=$CUSTOM_CLANG_INSTALL/hdf5_clang
-# RUN wget https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.6/hdf5-1.14.6.tar.gz; \
-#     tar xf hdf5-1.14.6.tar.gz; \
-#     cd hdf5-1.14.6; \
 RUN cd $CUSTOM_CLANG_BUILD; \
     wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.7/src/hdf5-1.10.7.tar.gz; \
     tar xf hdf5-1.10.7.tar.gz; \
     cd hdf5-1.10.7; \
-    ./configure \
-    --prefix=${HDF5_INSTALL_PATH} \
-    --enable-parallel \
-    --enable-shared \
-    --enable-hl \
-    CC=${OMPI_INSTALL_PATH}/bin/mpicc \
-    CXX=${OMPI_INSTALL_PATH}/bin/mpicxx; \
-    make -j4 ; \
-    make install; \
+    rm -rf build && mkdir -p build && cd build; \
+    cmake .. \
+        -DCMAKE_INSTALL_PREFIX=${HDF5_INSTALL_PATH} \
+        -DCMAKE_C_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicc \
+        -DCMAKE_CXX_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicxx \
+        -DBUILD_SHARED_LIBS=ON \
+        -DHDF5_ENABLE_Z_LIB_SUPPORT=ON \
+        -DZLIB_INCLUDE_DIR=/usr/include \
+        -DZLIB_LIBRARY=/usr/lib/x86_64-linux-gnu/libz.so;
+        -GNinja\
+    ninja -j4 ; \
+    ninja install; \
     cd ..
+
+# Add HDF5 to paths and environment variables
+ENV PATH="$HDF5_INSTALL_PATH/bin:$PATH"
+ENV LIBRARY_PATH="$HDF5_INSTALL_PATH/lib:$LIBRARY_PATH"
+ENV LD_LIBRARY_PATH="$HDF5_INSTALL_PATH/lib:$LD_LIBRARY_PATH"
+ENV CPATH="$HDF5_INSTALL_PATH/include:$CPATH"
+
 
 # Install netcdf-c
 ENV NETCDF_INSTALL_PATH=$CUSTOM_CLANG_INSTALL/netcdf_clang
@@ -143,38 +159,55 @@ RUN cd $CUSTOM_CLANG_BUILD; \
     wget https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.8.1.tar.gz -O netcdf-c-4.8.1.tar.gz; \
     tar xf netcdf-c-4.8.1.tar.gz; \
     cd netcdf-c-4.8.1; \
-    export CPPFLAGS="-I${HDF5_INSTALL_PATH}/include"; \
-    export LDFLAGS="-L${HDF5_INSTALL_PATH}/lib"; \
-    ./configure \
-    --prefix=${NETCDF_INSTALL_PATH} \
-    --enable-parallel-tests \
-    --enable-shared \
-    CC=${OMPI_INSTALL_PATH}/bin/mpicc; \
-    make -j4; \
-    make install; \
+    rm -rf build && mkdir -p build && cd build; \
+    cmake .. \
+        -DCMAKE_INSTALL_PREFIX=${NETCDF_INSTALL_PATH} \
+        -DCMAKE_C_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicc \
+        -DCMAKE_CXX_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicxx \
+        -DBUILD_SHARED_LIBS=ON \
+        -DENABLE_TESTS=OFF \
+        -GNinja; \
+    ninja -j4; \
+    ninja install; \
     cd ..
 
-# ENV VTK_INSTALL_PATH=/opt/install_vtk_clang
+# Add NetCDF to paths and environment variables
+ENV PATH="$NETCDF_INSTALL_PATH/bin:$PATH"
+ENV LIBRARY_PATH="$NETCDF_INSTALL_PATH/lib:$LIBRARY_PATH"
+ENV LD_LIBRARY_PATH="$NETCDF_INSTALL_PATH/lib:$LD_LIBRARY_PATH"
+ENV CPATH="$NETCDF_INSTALL_PATH/include:$CPATH"
 
-# # Install vtk library with clang compiler
-# RUN git clone https://github.com/Kitware/VTK.git; \
-#     cd VTK; \
-#     git checkout v${vtk_version}; \
-# # configure build with cmake
-#     rm -rf build && mkdir -p build && cd build ; \
-#     cmake .. \
-#         -DCMAKE_C_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicc \
-#         -DCMAKE_CXX_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicxx \
-#         -DCMAKE_INSTALL_PREFIX=${VTK_INSTALL_PATH} \
-#         -DBUILD_TESTING=OFF \
-#         -DCMAKE_BUILD_TYPE=Release \
-#         -DVTK_USE_MPI=ON \
-#         -DVTK_GROUP_ENABLE_MPI=YES \
-#         -DNetCDF_ROOT=${NETCDF_INSTALL_PATH} \
-#         -DHDF5_ROOT=${HDF5_INSTALL_PATH} \
-#         -GNinja; \
-# # build and install vtk
-#     ninja -j4; \
-#     ninja install -j4; \
-# # cleanup
-#     cd ../.. && rm -rf VTK
+ENV VTK_INSTALL_PATH=$CUSTOM_CLANG_INSTALL/vtk_clang
+
+# Install vtk library with clang compiler
+RUN git clone https://github.com/Kitware/VTK.git; \
+    cd VTK; \
+    git checkout v${vtk_version}; \
+# configure build with cmake
+    rm -rf build && mkdir -p build && cd build ; \
+    cmake .. \
+        -DCMAKE_C_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicc \
+        -DCMAKE_CXX_COMPILER=${OMPI_INSTALL_PATH}/bin/mpicxx \
+        -DCMAKE_INSTALL_PREFIX=${VTK_INSTALL_PATH} \
+        -DBUILD_TESTING=OFF \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DVTK_USE_MPI=ON \
+        -DVTK_GROUP_ENABLE_MPI=YES \
+        -GNinja; \
+# build and install vtk
+    ninja -j4; \
+    ninja install -j4; \
+# cleanup
+    cd ../.. && rm -rf VTK
+
+# Add NetCDF to paths and environment variables
+ENV PATH="$VTK_INSTALL_PATH/bin:$PATH"
+ENV LIBRARY_PATH="$VTK_INSTALL_PATH/lib:$LIBRARY_PATH"
+ENV LD_LIBRARY_PATH="$VTK_INSTALL_PATH/lib:$LD_LIBRARY_PATH"
+ENV CPATH="$VTK_INSTALL_PATH/include:$CPATH"
+
+
+# BACKUP lines
+        # -DHDF5_ROOT=${HDF5_INSTALL_PATH} \
+        # -DNetCDF_ROOT=${NETCDF_INSTALL_PATH} \
+        # -DHDF5_ROOT=${HDF5_INSTALL_PATH} \

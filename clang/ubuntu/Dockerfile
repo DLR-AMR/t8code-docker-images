@@ -9,6 +9,8 @@ ARG vtk_library_version=9.1
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LIBRARY_PATH=/usr/local/lib
 ENV LD_LIBRARY_PATH=/usr/local/lib
+ENV CUSTOM_CLANG_INSTALL=/custom_clang_install
+ENV CUSTOM_CLANG_BUILD=/custom_clang_build
 
 #######################################################
 # Install software requirements and build tools       #
@@ -52,12 +54,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libtbb2
 
 # Export openmpi path to later use it in the github workflow.
-ENV OMPI_INSTALL_PATH=/opt/install_openmpi_clang
+ENV OMPI_INSTALL_PATH=$CUSTOM_CLANG_INSTALL/openmpi_clang
 ENV PATH="$OMPI_INSTALL_PATH/bin:$PATH"
+
+RUN mkdir -p $CUSTOM_CLANG_BUILD && mkdir -p $CUSTOM_CLANG_INSTALL
 
 # Install openmpi with clang compiler.
 # TODO: Make version an ARG as in vtk?
-RUN mkdir install_ompi_clang; \
+RUN cd $CUSTOM_CLANG_BUILD; \
     wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.6.tar.gz; \
     tar xf openmpi-4.1.6.tar.gz; \
     cd openmpi-4.1.6; \
@@ -72,9 +76,10 @@ RUN mkdir install_ompi_clang; \
 
 
 # Install OpenCASCADE
-ENV OCCT_INSTALL_PATH=/opt/install_occt_clang
+ENV OCCT_INSTALL_PATH=$CUSTOM_CLANG_INSTALL/occt_clang
 RUN ls -l /usr/lib/x86_64-linux-gnu/libtbb*; \
     set -e; \
+    cd $CUSTOM_CLANG_BUILD; \
     git clone https://github.com/Open-Cascade-SAS/OCCT.git; \
     cd OCCT; \
     git checkout V7_5_1; \
@@ -109,15 +114,14 @@ RUN ls -l /usr/lib/x86_64-linux-gnu/libtbb*; \
 # cleanup
     cd ../.. && rm -rf OCCT
 
-# # Install HDF5
+# Install HDF5
 # ENV HDF5_INSTALL_PATH=/opt/install_hdf5_clang
 # # RUN wget https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.6/hdf5-1.14.6.tar.gz; \
 # #     tar xf hdf5-1.14.6.tar.gz; \
 # #     cd hdf5-1.14.6; \
-# RUN wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.7/src/hdf5-1.10.7.tar.gz
-#     tar xf hdf5-1.10.7.tar.gz
-    
-
+# RUN wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.7/src/hdf5-1.10.7.tar.gz; \
+#     tar xf hdf5-1.10.7.tar.gz; \
+#     cd hdf5-1.10.7; \
 #     ./configure \
 #     --prefix=${HDF5_INSTALL_PATH} \
 #     --enable-parallel \

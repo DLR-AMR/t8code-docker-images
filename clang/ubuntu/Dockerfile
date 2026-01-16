@@ -133,7 +133,7 @@ RUN cd $CUSTOM_CLANG_BUILD; \
         -DBUILD_SHARED_LIBS=ON \
         -DHDF5_ENABLE_Z_LIB_SUPPORT=ON \
         -DZLIB_INCLUDE_DIR=/usr/include \
-        -DZLIB_LIBRARY=/usr/lib/x86_64-linux-gnu/libz.so;
+        -DZLIB_LIBRARY=/usr/lib/x86_64-linux-gnu/libz.so \
         -GNinja; \
     ninja -j4 ; \
     ninja install

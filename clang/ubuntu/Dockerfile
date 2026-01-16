@@ -41,6 +41,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
                         pkg-config \
                         git \
                         clang \
+                        gfortran \
                         ca-certificates \
                         autoconf automake libtool m4 \
                         zlib1g-dev libcurl4-openssl-dev \
@@ -73,7 +74,7 @@ RUN cd $CUSTOM_CLANG_BUILD; \
     wget https://download.open-mpi.org/release/open-mpi/v${ompi_library_version}/openmpi-${ompi_version}.tar.gz; \
     tar xf openmpi-${ompi_version}.tar.gz; \
     cd openmpi-${ompi_version}; \
-    CC=clang CXX=clang++ ./configure --prefix=$OMPI_INSTALL_PATH; \
+    CC=clang CXX=clang++ FC=gfortran ./configure --prefix=$OMPI_INSTALL_PATH; \
     make -j$(nproc); \
     make install
 

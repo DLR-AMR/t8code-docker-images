@@ -1,2 +1,2 @@
 # t8code-docker-images
-Docker images for t8code and its dependencies
+Docker image for the t8cod CI

@@ -13,10 +13,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include: 
+        include:
           - os: ubuntu-latest
             target_os: ubuntu
-    runs-on: ${{ matrix.os }} 
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
     - name: Build the docker image
@@ -28,53 +28,4 @@ jobs:
       run: |
         echo ${{ env.docker_token }} | docker login --username dlramr --password-stdin
         docker push dlramr/t8code-${{ matrix.target_os }}:t8-dependencies
-  with_t8code:
-    needs: t8_dependencies
-    strategy:
-      fail-fast: false
-      matrix:
-        include: 
-          - os: ubuntu-latest
-            target_os: ubuntu
-            tag: t8-1.0.0
-            t8code_version: 1.0.0
-          - os: ubuntu-latest
-            target_os: ubuntu
-            tag: t8-1.1.0
-            t8code_version: 1.1.0
-          - os: ubuntu-latest
-            target_os: ubuntu
-            tag: t8-1.2.0
-            t8code_version: 1.2.0
-          - os: ubuntu-latest
-            target_os: ubuntu
-            tag: t8-1.3.0
-            t8code_version: 1.3.0
-          - os: ubuntu-latest
-            target_os: ubuntu
-            tag: t8-1.4.1
-            t8code_version: 1.4.1
-          - os: ubuntu-latest
-            target_os: ubuntu
-            tag: t8-1.5.0
-            t8code_version: 1.5.0
-          - os: ubuntu-latest
-            target_os: ubuntu
-            tag: t8-1.6.1
-            t8code_version: 1.6.1
-          - os: ubuntu-latest
-            target_os: ubuntu
-            tag: t8-2.0.0
-            t8code_version: 2.0.0
-    runs-on: ${{ matrix.os }} 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build the docker image
-      run: |
-        docker build --build-arg t8code_version=${{ matrix.t8code_version}} --tag dlramr/t8code-${{ matrix.target_os }}:${{ matrix.tag }} t8code/${{ matrix.target_os }}
-    - name: Push the docker image
-      env: # Set the secret as an input
-        docker_token: ${{ secrets.DOCKER_TOKEN }}
-      run: |
-        echo ${{ env.docker_token }} | docker login --username dlramr --password-stdin
-        docker push dlramr/t8code-${{ matrix.target_os }}:${{ matrix.tag }}
+

@@ -31,6 +31,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libtool \
                        doxygen-latex \
                        ninja-build \
+                       jq \
 # install opengl libs
                        xorg-dev \
                        libglu1-mesa-dev \

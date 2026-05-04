@@ -1,6 +1,6 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 LABEL org.opencontainers.image.authors="Sandro Elsweijer <sandro.elsweijer@dlr.de>"
-LABEL Description="Ubuntu 20.04 with VTK, NetCDF and OpenCASCADE setup for use with t8code"
+LABEL Description="Ubuntu 22.04 with VTK, NetCDF and OpenCASCADE setup for use with t8code"
 SHELL ["/bin/bash", "-c"]
 
 ARG vtk_version=9.1.0
@@ -31,6 +31,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libtool \
                        doxygen-latex \
                        ninja-build \
+                       jq \
 # install opengl libs
                        xorg-dev \
                        libglu1-mesa-dev \

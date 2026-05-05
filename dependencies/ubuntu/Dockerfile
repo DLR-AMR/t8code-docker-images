@@ -35,7 +35,6 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        valgrind \
                        lcov \
 # install latex deps
-
                        texlive-latex-base \
                        texlive-latex-recommended \
                        texlive-latex-extra \

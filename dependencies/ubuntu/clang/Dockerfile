@@ -62,8 +62,6 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libocct-foundation-dev \
                        libocct-modeling-algorithms-dev\
                        libocct-modeling-data-dev \
-# install NetCDF
-                       libnetcdf-dev
 
 # Prepare folders once
 RUN rm -rf $CUSTOM_CLANG_BUILD && mkdir -p $CUSTOM_CLANG_BUILD && \

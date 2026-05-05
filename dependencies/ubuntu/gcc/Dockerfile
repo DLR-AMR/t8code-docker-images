@@ -51,9 +51,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
 # install OpenCASCADE
                        libocct-foundation-dev \
                        libocct-modeling-algorithms-dev\
-                       libocct-modeling-data-dev \
-# install NetCDF
-                       libnetcdf-dev
+                       libocct-modeling-data-dev
 
 # install clang-format
 RUN pip install clang-format==17.0.1

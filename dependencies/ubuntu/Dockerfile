@@ -32,6 +32,16 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        doxygen-latex \
                        ninja-build \
                        jq \
+                       valgrind \
+                       lcov \
+# install latex deps
+
+                       texlive-latex-base \
+                       texlive-latex-recommended \
+                       texlive-latex-extra \
+                       texlive-fonts-recommended \
+                       texlive-font-utils \
+                       ghostscript \
 # install opengl libs
                        xorg-dev \
                        libglu1-mesa-dev \
@@ -45,6 +55,9 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        libocct-modeling-data-dev \
 # install NetCDF
                        libnetcdf-dev
+
+# install clang-format
+RUN pip install clang-format==17.0.1
 
 # clone vtk
 RUN git clone https://github.com/Kitware/VTK.git; \

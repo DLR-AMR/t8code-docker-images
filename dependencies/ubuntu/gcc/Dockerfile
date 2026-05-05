@@ -34,6 +34,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        jq \
                        valgrind \
                        lcov \
+                       python3 \
 # install latex deps
                        texlive-latex-base \
                        texlive-latex-recommended \

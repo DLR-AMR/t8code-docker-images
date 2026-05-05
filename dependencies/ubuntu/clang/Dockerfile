@@ -61,7 +61,7 @@ RUN apt-get update -y && apt-get upgrade -y; \
 # install OpenCASCADE
                        libocct-foundation-dev \
                        libocct-modeling-algorithms-dev\
-                       libocct-modeling-data-dev \
+                       libocct-modeling-data-dev
 
 # Prepare folders once
 RUN rm -rf $CUSTOM_CLANG_BUILD && mkdir -p $CUSTOM_CLANG_BUILD && \

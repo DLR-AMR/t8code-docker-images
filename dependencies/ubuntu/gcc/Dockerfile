@@ -69,7 +69,6 @@ RUN wget https://www.doxygen.nl/files/doxygen-${doxygen_version}.linux.bin.tar.g
     rm -rf doxygen-${DOXYGEN_VERSION}.linux.bin.tar.gz
 RUN doxygen --version
 
-
 # clone vtk
 RUN git clone https://github.com/Kitware/VTK.git; \
     cd VTK; \

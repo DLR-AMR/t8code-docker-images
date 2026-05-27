@@ -5,6 +5,7 @@ SHELL ["/bin/bash", "-c"]
 
 ARG vtk_version=9.1.0
 ARG vtk_library_version=9.1
+ARG doxygen_version=1.13.2
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
@@ -24,6 +25,8 @@ RUN apt-get update -y && apt-get upgrade -y; \
                        build-essential \
                        cmake \
                        wget \
+                       ca-certificates \
+                       graphviz \
                        curl \
                        git \
                        libmpich-dev \
@@ -56,6 +59,16 @@ RUN apt-get update -y && apt-get upgrade -y; \
 
 # install clang-format
 RUN pip install clang-format==17.0.1
+
+# Download specific, precompiled doxygen version from official website and add it to binaries.
+RUN wget https://www.doxygen.nl/files/doxygen-${doxygen_version}.linux.bin.tar.gz && \
+    tar xf doxygen-${doxygen_version}.linux.bin.tar.gz && \
+    mv doxygen-${doxygen_version}/bin/doxygen /usr/local/bin/doxygen && \
+    chmod +x /usr/local/bin/doxygen && \
+    rm -rf doxygen-${DOXYGEN_VERSION} && \
+    rm -rf doxygen-${DOXYGEN_VERSION}.linux.bin.tar.gz
+RUN doxygen --version
+
 
 # clone vtk
 RUN git clone https://github.com/Kitware/VTK.git; \

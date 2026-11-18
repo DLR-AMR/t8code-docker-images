@@ -8,6 +8,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+concurrency:
+  # Base the group on workflow name and ref to allow concurrent runs for different branches, but not multiple runs for the same branch.
+  group: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
   t8_dependencies:
     strategy:

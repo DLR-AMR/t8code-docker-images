@@ -11,6 +11,7 @@ on:
 concurrency:
   # Base the group on workflow name and ref to allow concurrent runs for different branches, but not multiple runs for the same branch.
   group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   t8_dependencies:
